@@ -23,7 +23,12 @@ module.exports = (grunt) ->
           bail: true
         src: ['test/**/*.coffee']
 
-  grunt.loadNpmTasks 'grunt-contrib-coffee'
+    shell:
+      coffee:
+        command: 'node_modules/.bin/coffee --output lib src'
+        dest: 'lib'
+
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-coffeelint'
   grunt.loadNpmTasks 'grunt-mocha-test'
+  grunt.loadNpmTasks 'grunt-shell'
