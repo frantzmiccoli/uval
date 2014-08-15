@@ -2,6 +2,5 @@ language: node_js
 node_js:
   - "0.11"
   - "0.10"
-scripts:
+before_script:
   - "export NODE_PATH=$NODE_PATH\:`pwd`/src"
-  - "npm test"
