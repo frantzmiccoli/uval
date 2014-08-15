@@ -3,5 +3,5 @@ node_js:
   - "0.11"
   - "0.10"
 scripts:
-  "nodepath": "export NODE_PATH=$NODE_PATH\:`pwd`/src"
-  "test": "npm test"
+  - "export NODE_PATH=$NODE_PATH\:`pwd`/src"
+  - "npm test"
