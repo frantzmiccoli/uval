@@ -2,10 +2,15 @@
   "name": "uval",
   "version": "0.1.0",
   "author": "Fräntz Miccoli",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frantzmiccoli/uval"
+  },
   "devDependencies": {
-    "coffee-script": "^1.7.1",
     "chai": "^1.9.1",
+    "coffee-script": "^1.7.1",
     "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
     "grunt-coffeelint": "0.0.10",
     "grunt-contrib-coffee": "^0.10.1",
     "grunt-contrib-watch": "^0.6.1",
@@ -18,6 +23,6 @@
     "validator": "^3.16.1"
   },
   "scripts": {
-      "test": "grunt mochaTest"
+    "test": "node_modules/bin/grunt mochaTest"
   }
 }
