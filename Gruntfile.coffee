@@ -28,7 +28,7 @@ module.exports = (grunt) ->
         command: 'node_modules/.bin/coffee --output lib src'
 
       publish:
-        command: 'cp package.json lib/uval; (cd lib/uval; npm publish);'
+        command: 'cp package.json lib/uval; cp README.md lib/uval; (cd lib/uval; npm publish);'
 
 
   grunt.loadNpmTasks 'grunt-contrib-watch'
