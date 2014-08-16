@@ -1,3 +1,6 @@
+[![Build Status](https://secure.travis-ci.org/frantzmiccoli/uval.png)](http://travis-ci.org/frantzmiccoli/uval)
+
+
 Intentions
 ===
 Some validation utilities are provided in the node.js ecosystem, but we felt that nothing that handles a full validation chain with loose coupling was available.
