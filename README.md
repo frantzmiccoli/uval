@@ -3,27 +3,28 @@
 
 Intentions
 ===
-Some validation utilities are provided in the node.js ecosystem, but we felt that nothing that handles a full validation chain with loose coupling was available.
+Some validation utilities are provided in the node.js ecosystem, but we felt that nothing that handles a **full validation library with loose coupling** was available.
 
 **uval** tries to be this missing tool.
 
 Features
 ===
 
-* A generic validation system mostly represented by an abstract validation class, `uval/validator/Abstract`.
-* A few validators available from known validation libraries available through the registry, `uval/registry`, you can add your own easily be using `uval/validator/Generic`.
+* A generic validation system mostly represented by an **abstract validation class**, `uval/validator/Abstract`.
+* A few **validators available from known validation libraries** available through the registry, `uval/registry`, you can add your own easily be using `uval/validator/Generic`.
 * A few validation utilities that lets you:
 
-    * Compose an object level validation `uval/validator/Object`.
+    * Compose an **object level validation** `uval/validator/Object`.
     * Compose a validation chain `uval/validator/ValidationChain` which is ensuring that the input valids **all** the provided validators.
     * Make an **or** over a set of validators `uval/validator/Or` where the input must valid **at least one** validator.
-    * Apply a validation over all elements of an array `uval/validator/Array`.
+    * Apply a **validation over** all elements of **an array** `uval/validator/Array`.
 
 * A failure data retrieval logic that let you do whatever you want to handle the error and the translation through the usage of the `getFailureData()` method.
 * Support a context for validation, the validate function takes a second `context` argument and broadcast it to all subvalidators when any.
 
 What you won't find in uval
 ---
+
 * No mechanism handling the translation is provided. You are supposed to do this by handling what comes out of `getFailureData()`. **Error identifiers are on purpose non english string**, a correct error handling should include a translation of the error message and maybe a retrieval of the input or the context, this is out of our scope.  
 * uval is only node.js compatible right now, it could be easily modified to be available client side
 * uval does not support promises, if someone feels like updating it, I have absolutely no problem with it. 
