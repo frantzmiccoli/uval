@@ -1,4 +1,8 @@
 GenericValidator = require 'uval/validator/Generic'
+OrValidator = require 'uval/validator/Or'
+ArrayValidator = require 'uval/validator/Array'
+ValidationChain = require 'uval/validator/ValidationChain'
+ObjectValidator = require 'uval/validator/Object'
 
 registry = {}
 
@@ -15,6 +19,17 @@ registry['uval.isnotset'] = ->
     !isSet(input)
   , 'uval/validator/isnotset/set')
 
+registry['uval.or'] = (args...) ->
+  new OrValidator(args...)
+
+registry['uval.array'] = (args...) ->
+  new ArrayValidator(args...)
+
+registry['uval.validationchain'] = (args...) ->
+  new ValidationChain(args...)
+
+registry['uval.object'] = (args...) ->
+  new ObjectValidator(args...)
 
 nodeValidator = require 'validator'
 

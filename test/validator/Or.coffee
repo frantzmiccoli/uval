@@ -1,6 +1,7 @@
 {expect} = require 'chai'
 
-OrValidator = require 'uval/validator/Or'
+registry = require 'uval/registry'
+OrValidator = registry['uval.or']
 orValidator = new OrValidator
 
 registry = require 'uval/registry'

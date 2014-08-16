@@ -1,7 +1,7 @@
 {expect} = require 'chai'
 
-ObjectValidator = require 'uval/validator/Object'
 registry = require 'uval/registry'
+ObjectValidator = registry['uval.object']
 
 validator = new ObjectValidator()
 

@@ -1,7 +1,7 @@
 {expect} = require 'chai'
 
-ValidationChain = require 'uval/validator/ValidationChain'
 registry = require 'uval/registry'
+ValidationChain = registry['uval.validationchain']
 
 validator = new ValidationChain()
 

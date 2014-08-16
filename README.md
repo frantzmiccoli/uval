@@ -36,8 +36,10 @@ The registry contains already available validators from other libraries wrapped 
 * `validator.isurl` is coming from `node-validator` (that is usually imported through `require('validator')`
 * `_.isarray` is coming from `node-underscore`
 
+**The registry can be accessed either through `require('uval')` and `require('uval/registry')`**.
+
 ```
-var registry = require('uval/registry');
+var registry = require('uval');
 
 // Let's show what's in there
 console.log(Object.keys(registry));
@@ -58,16 +60,16 @@ Array validation
 ---
 
 ```
-var registry = require('registry'),
+var registry = require('uval/registry'),
     isNumericValidator = registry['validator.isnumeric'](),
-    ArrayValidator = require('uval/validator/Array'),
+    ArrayValidator = registry['uval.array'],
     arrayValidator = new ArrayValidator(isNumericValidator);
     
 console.log(arrayValidator.validate([0, 1, 2, 3, 'nope']));
 // The failure data for composed validator is a bit more complex
 console.log(arrayValidator.getFailureData());
 
-console.log(arrayValidator.validate([0, 1.2, -23]));
+console.log(arrayValidator.validate([0, 12, -23]));
 ```
 
 Optional parameters
@@ -77,7 +79,7 @@ Optional parameters
 var registry = require('uval/registry'),
     urlValidator = registry['validator.isurl'](),
     notSetValidator = registry['uval.isnotset'](),
-    OrValidator = require('uval/validator/Or'),
+    OrValidator = registry['uval.or'],
     nothingOrUrlValidator = new OrValidator([notSetValidator, urlValidator]);
     
 console.log(nothingOrUrlValidator.validate(undefined)); // should pass
@@ -92,7 +94,7 @@ Validating a complex object
 var registry = require('uval/registry'),
     urlValidator = registry['validator.isurl'](),
     setValidator = registry['uval.isset'](),
-    ObjectValidator = require('uval/validator/Object'),
+    ObjectValidator = registry['uval.object'],
     userValidator = new ObjectValidator();
     
 userValidator.add('name', setValidator);

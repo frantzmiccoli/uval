@@ -16,7 +16,6 @@ class ObjectValidator extends ValidatorAbstract
     @_validators[fieldName] = validator
 
   getFailureData: =>
-
     return @_failureData
 
   _isValid: (input, context) =>
