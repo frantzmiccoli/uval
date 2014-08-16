@@ -1,10 +1,13 @@
 {
   "name": "uval",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "author": "Fräntz Miccoli",
+  "license" : "MIT",
+  "description" : "A generic and extendable validation library containing tools for validation chain, array validation, optional validation and others.",
+  "keywords": ["uval", "validation"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/frantzmiccoli/uval"
+    "url": "git://github.com/frantzmiccoli/uval.git"
   },
   "devDependencies": {
     "chai": "^1.9.1",

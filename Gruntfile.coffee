@@ -26,7 +26,10 @@ module.exports = (grunt) ->
     shell:
       coffee:
         command: 'node_modules/.bin/coffee --output lib src'
-        dest: 'lib'
+
+      publish:
+        command: 'cp package.json lib/uval; (cd lib/uval; npm publish);'
+
 
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-coffeelint'
