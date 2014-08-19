@@ -7,6 +7,8 @@ Some validation utilities are provided in the node.js ecosystem, but we felt tha
 
 **uval** tries to be this missing tool.
 
+    npm install uval
+
 Features
 ===
 
