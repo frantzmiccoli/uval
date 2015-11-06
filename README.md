@@ -28,7 +28,7 @@ What you won't find in uval
 ---
 
 * No mechanism handling the translation is provided. You are supposed to do this by handling what comes out of `getFailureData()`. **Error identifiers are on purpose non english string**, a correct error handling should include a translation of the error message and maybe a retrieval of the input or the context, this is out of our scope.  
-* uval is only node.js compatible right now, it could be easily modified to be available client side
+* uval is only node.js compatible right now, it could be easily modified to be available client side (or you can use browserify).
 * uval does not support promises, if someone feels like updating it, I have absolutely no problem with it. 
 
 Sample code
