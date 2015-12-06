@@ -38,7 +38,8 @@ class ValidatorAbstract
     throw new Exception("getFailureData must be implemented by the subclass.")
 
   _isValid: (input, context) =>
-    throw new Exception("_isValid must be implemented by the subclass.")
+    throw new Exception("_isValid must be implemented by the subclass and " +
+      "return a promise.")
 
   _reset: =>
     # Override to implement object state reset

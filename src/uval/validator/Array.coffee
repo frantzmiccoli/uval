@@ -1,3 +1,5 @@
+Promise = require 'bluebird'
+
 ValidatorAbstract = require 'uval/validator/Abstract'
 
 
@@ -12,8 +14,8 @@ class ArrayValidator extends ValidatorAbstract
     super()
     @_failureData = []
 
-  setValidator: (validator) =>
-    @_validator = validator
+  setValidatorGenerator: (validatorGenerator) =>
+    @_validatorGenerator = validatorGenerator
 
   getFailureData: =>
     @_failureData
@@ -22,13 +24,26 @@ class ArrayValidator extends ValidatorAbstract
     @_failureData = @_getStandardFailureData(input, context)
     unless @_isArray(input)
       @_failureData.type = @_failureTypePrefix + 'notAnArray'
-      return false
+      return Promise.resolve(false)
 
-    valid = true
+    promises = []
     for value in input
-      unless @_validator.validate(value)
+      validator = @_validatorGenerator()
+      validationPromise = validator.validate(value).then (isValid) =>
+        {isValid: isValid, validator: validator}
+
+      promises.push(validationPromise)
+
+    Promise.all(promises).then (validationResults) =>
+      @_handleValidationResults(validationResults)
+
+  _handleValidationResults: (validationResults) =>
+    valid = true
+    for validationResult in validationResults
+      unless validationResult.isValid
         valid = false
-        @_failureData.subFailureData.push(@_validator.getFailureData())
+        @_failureData.subFailureData.push(
+          validationResult.validator.getFailureData())
       else
         @_failureData.subFailureData.push(undefined)
 

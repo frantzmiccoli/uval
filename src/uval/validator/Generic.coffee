@@ -1,3 +1,5 @@
+Promise = require 'bluebird'
+
 ValidatorAbstract = require 'uval/validator/Abstract'
 
 class GenericValidator extends ValidatorAbstract
@@ -11,7 +13,7 @@ class GenericValidator extends ValidatorAbstract
 
   _isValid: (input, context) =>
     @_failureData = @_getStandardFailureData(input, context)
-    @_validationFunction(input, @_extraValidationArguments...)
+    Promise.resolve(@_validationFunction(input, @_extraValidationArguments...))
 
   _getStandardFailureData: (input, context) =>
     failureData = super(input, context)
