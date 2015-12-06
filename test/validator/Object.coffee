@@ -18,24 +18,32 @@ describe 'ObjectValidator', ->
     expect(validatorsKeys.length).to.equal 3
 
   it 'should process correctly undefined', ->
-    expect(validator.validate(undefined)).to.equal false
+    validator.validate(undefined).then (isValid) ->
+      expect(isValid).to.equal false
 
   it 'should process correctly an empty object', ->
-    expect(validator.validate({})).to.equal false
-    subFailureData = validator.getFailureData().subFailureData
-    expect(Object.keys(subFailureData).length).to.equal 3
+    validator.validate({}).then (isValid) ->
+      expect(isValid).to.equal false
+
+      subFailureData = validator.getFailureData().subFailureData
+      expect(Object.keys(subFailureData).length).to.equal 3
 
   it 'should fail on incorrect objects', ->
     testObject = first_field: 12
-    expect(validator.validate(testObject)).to.equal false
-    subFailureData = validator.getFailureData().subFailureData
-    expect(Object.keys(subFailureData).length).to.equal 2
+    validator.validate(testObject).then (isValid) ->
+      expect(isValid).to.equal false
+
+      subFailureData = validator.getFailureData().subFailureData
+      expect(Object.keys(subFailureData).length).to.equal 2
 
   it 'should succeed correct object', ->
     testObject =
       first_field: 'why snake case ?'
       secondField: 2
       thirdField: 3
-    expect(validator.validate(testObject)).to.equal true
-    subFailureData = validator.getFailureData().subFailureData
-    expect(Object.keys(subFailureData).length).to.equal 0
+
+    validator.validate(testObject).then (isValid) ->
+      expect(isValid).to.equal true
+
+      subFailureData = validator.getFailureData().subFailureData
+      expect(Object.keys(subFailureData).length).to.equal 0

@@ -1,3 +1,5 @@
+Promise = require 'bluebird'
+
 ValidatorAbstract = require 'uval/validator/Abstract'
 
 ###
@@ -22,14 +24,26 @@ class ObjectValidator extends ValidatorAbstract
     @_failureData = @_getStandardFailureData(input, context)
     unless input
       @_failureData.type = @_failureTypePrefix + 'isUndefined'
-      return false
+      return Promise.resolve(false)
 
-    valid = true
+    validatorsMap = {}
+
     for fieldName, validator of @_validators
-      validatorSuccess = validator.validate(input[fieldName], context)
-      valid &&= validatorSuccess
-      if !validatorSuccess
-        @_failureData.subFailureData[fieldName] = validator.getFailureData()
+      validationPromise =
+        validator.validate(input[fieldName], context).then (isValid) ->
+          {isValid: isValid, validator: validator}
+      validatorsMap[fieldName] = validationPromise
+
+    Promise.props(validatorsMap).then (validationResults) =>
+      @_handleValidationResults(validationResults)
+
+  _handleValidationResults: (validationResults) =>
+    valid = true
+    for fieldName, validationResult of validationResults
+      unless validationResult.isValid
+        valid = false
+        @_failureData.subFailureData[fieldName] =
+          validationResult.validator.getFailureData()
 
     unless valid
       @_failureData.type = @_failureTypePrefix + 'subValidatorFailure'
