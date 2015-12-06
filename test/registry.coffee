@@ -9,32 +9,70 @@ describe 'ValidatorRegistry', ->
 describe 'ValidatorRegistry\'s contained uval.isset validator', ->
   it 'should correctly test what is set', ->
     isSet = registry['uval.isset']()
-    expect(isSet.validate(undefined)).to.be.false
-    expect(isSet.validate('')).to.be.false
-    expect(isSet.validate('123')).to.be.true
+    isSet.validate(undefined).then (isValid) ->
+      expect(isValid).to.be.false
+
+      isSet.validate('')
+    .then (isValid) ->
+      expect(isValid).to.be.false
+
+      isSet.validate('123')
+    .then (isValid) ->
+      expect(isValid).to.be.true
 
 describe 'ValidatorRegistry\'s contained ported validator', ->
   it 'should correctly implement validator.isurl', ->
     isUrl = registry['validator.isurl']()
-    expect(isUrl.validate('Something else')).to.be.false
-    expect(isUrl.validate('http://google.co.uk')).to.be.true
-    expect(isUrl.validate('ftp://kenagard.com')).to.be.true
+    isUrl.validate('Something else').then (isValid) ->
+      expect(isValid).to.be.false
+
+      isUrl.validate('http://google.co.uk')
+    .then (isValid) ->
+      expect(isValid).to.be.true
+
+      isUrl.validate('ftp://kenagard.com')
+    .then (isValid) ->
+      expect(isValid).to.be.true
 
   it 'should correctly implement validator.isnumeric', ->
     isNumeric = registry['validator.isnumeric']()
-    expect(isNumeric.validate('Something else')).to.be.false
-    expect(isNumeric.validate(12)).to.be.true
-    expect(isNumeric.validate('123')).to.be.true
-    expect(isNumeric.validate(42.7)).to.be.false
+    isNumeric.validate('Something else').then (isValid) ->
+      expect(isValid).to.be.false
+
+      isNumeric.validate(12)
+    .then (isValid) ->
+      expect(isValid).to.be.true
+
+      isNumeric.validate('123')
+    .then (isValid) ->
+      expect(isValid).to.be.true
+
+      isNumeric.validate(42.7)
+    .then (isValid) ->
+      expect(isValid).to.be.false
 
   it 'should correctly implement validator.isfloat', ->
     isFloat = registry['validator.isfloat']()
-    expect(isFloat .validate('Something else')).to.be.false
-    expect(isFloat .validate(1)).to.be.true
-    expect(isFloat .validate(42.7)).to.be.true
-    expect(isFloat .validate('-42.7')).to.be.true
+    isFloat.validate('Something else').then (isValid) ->
+      expect(isValid).to.be.false
+
+      isFloat.validate(1)
+    .then (isValid) ->
+      expect(isValid).to.be.true
+
+      isFloat.validate(42.7)
+    .then (isValid) ->
+      expect(isValid).to.be.true
+
+      isFloat.validate('-42.7')
+    .then (isValid) ->
+      expect(isValid).to.be.true
 
   it 'should correctly implement validator.isin', ->
     isIn = registry['validator.isin'](['accepted', 'tolerated'])
-    expect(isIn.validate('Something else')).to.be.false
-    expect(isIn.validate('accepted')).to.be.true
+    isIn.validate('Something else').then (isValid) ->
+      expect(isValid).to.be.false
+
+      isIn.validate('accepted')
+    .then (isValid) ->
+      expect(isValid).to.be.true
