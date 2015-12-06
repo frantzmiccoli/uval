@@ -1,3 +1,4 @@
+Promise = require 'bluebird'
 
 ValidatorAbstract = require 'uval/validator/Abstract'
 
@@ -25,13 +26,26 @@ class OrValidator extends ValidatorAbstract
 
   _isValid: (input, context) =>
     if @_validators.length == 0
-      return true
-    lastFailureData
+      return Promise.resolve(true)
+
+    promises = []
     for validator in @_validators
-      isValid = validator.validate(input, context)
-      if isValid
+      validationPromise = validator.validate(input, context).then (isValid) ->
+        {isValid: isValid, validator: validator}
+
+      promises.push(validationPromise)
+
+    Promise.all(promises).then (validationResults) =>
+      @_handleValidationResults(validationResults)
+
+  _handleValidationResults: (validationResults) =>
+    lastFailureData = undefined
+    for validationResult in validationResults
+      if validationResult.isValid
         return true
-      lastFailureData = validator.getFailureData()
+
+      lastFailureData = validationResult.validator.getFailureData()
+
     @_failureData = lastFailureData
     return false
 
