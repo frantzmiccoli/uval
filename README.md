@@ -16,20 +16,20 @@ Features
 * A few **validators available from known validation libraries** available through the registry, `uval/registry`, you can add your own easily be using `uval/validator/Generic`.
 * A few validation utilities that lets you:
 
-    * Compose an **object level validation** `uval/validator/Object`.
-    * Compose a validation chain `uval/validator/ValidationChain` which is ensuring that the input valids **all** the provided validators.
-    * Make an **or** over a set of validators `uval/validator/Or` where the input must valid **at least one** validator.
-    * Apply a **validation over** all elements of **an array** `uval/validator/Array`.
+    * Compose an **object level validation** `uval/validator/Object`
+    * Compose a validation chain `uval/validator/ValidationChain` which is ensuring that the input valids **all** the provided validators
+    * Make an **or** over a set of validators `uval/validator/Or` where the input must valid **at least one** validator
+    * Apply a **validation over** all elements of **an array** `uval/validator/Array`
 
 * A failure data retrieval logic that let you do whatever you want to handle the error and the translation through the usage of the `getFailureData()` method.
 * Support a context for validation, the validate function takes a second `context` argument and broadcast it to all subvalidators when any.
+* Handle asynchronous validation since everything is made of promise (after version 1.0.0)
 
 What you won't find in uval
 ---
 
 * No mechanism handling the translation is provided. You are supposed to do this by handling what comes out of `getFailureData()`. **Error identifiers are on purpose non english string**, a correct error handling should include a translation of the error message and maybe a retrieval of the input or the context, this is out of our scope.  
-* uval is only node.js compatible right now, it could be easily modified to be available client side (or you can use browserify).
-* uval does not support promises, if someone feels like updating it, I have absolutely no problem with it. 
+* uval can be use in anything that supports require (e.g.: node backend developement or front end through browserify).
 
 Sample code
 ===
@@ -52,14 +52,21 @@ console.log(Object.keys(registry));
 
 // The registry contains generator that return one validator, but they are supposed to be reusable
 var urlValidator = registry['validator.isurl']();
-console.log(urlValidator.validate('http://www.github.com'));
+urlValidator.validate('http://www.github.com').then(function(isValid) {
+    console.log(isValid);
 
-console.log(urlValidator.validate('what ?'));
 
-console.log(urlValidator.getFailureData());
+    urlValidator.validate('what ?')
+}).then(function(isValid) {
+    console.log(isValid);
+    urlValidator.getFailureData();
 
-// This is true and getFailureData should be reset
-console.log(urlValidator.validate('http://www.github.com'));
+
+    urlValidator.validate('http://www.github.com');
+}).then(function(isValid) {
+    // This is true and getFailureData should be reset
+    console.log(isValid);
+});
 ```
 
 Array validation
@@ -70,12 +77,17 @@ var registry = require('uval/registry'),
     isNumericValidator = registry['validator.isnumeric'](),
     ArrayValidator = registry['uval.array'],
     arrayValidator = new ArrayValidator(isNumericValidator);
-    
-console.log(arrayValidator.validate([0, 1, 2, 3, 'nope']));
-// The failure data for composed validator is a bit more complex
-console.log(arrayValidator.getFailureData());
 
-console.log(arrayValidator.validate([0, 12, -23]));
+arrayValidator.validate([0, 1, 2, 3, 'nope']).then(function(isValid) {
+    console.log(isValid);
+    // The failure data for composed validators is a bit more complex
+    console.log(arrayValidator.getFailureData());
+
+
+    arrayValidator.validate([0, 12, -23])
+}).then(function(isValid) {
+    console.log(isValid);
+});
 ```
 
 Optional parameters
@@ -87,10 +99,23 @@ var registry = require('uval/registry'),
     notSetValidator = registry['uval.isnotset'](),
     OrValidator = registry['uval.or'],
     nothingOrUrlValidator = new OrValidator([notSetValidator, urlValidator]);
-    
-console.log(nothingOrUrlValidator.validate(undefined)); // should pass
-console.log(nothingOrUrlValidator.validate('Something that is not expected')); // should not pass
-console.log(nothingOrUrlValidator.validate('http://anything.com')); // should pass
+
+nothingOrUrlValidator.validate(undefined).then(function(isValid) {
+    // should pass
+    console.log(isValid);
+
+
+    nothingOrUrlValidator.validate('Something that is not expected');
+}).then(function(isValid) {
+    // should not pass
+    console.log(isValid);
+
+
+    nothingOrUrlValidator.validate('http://anything.com')
+}).then(function(isValid) {
+    // should not pass
+    console.log(isValid);
+});
 ```
 
 Validating a complex object
@@ -108,16 +133,21 @@ userValidator.add('url', urlValidator);
 
 var user = {};
 
-console.log(userValidator.validate(user));
-// The failure data is different from the one expected for arrays.
-console.log(userValidator.getFailureData());
+userValidator.validate(user).then(function(isValid) {
+    console.log(isValid);
+    // The failure data is different from the one expected for arrays.
+    console.log(userValidator.getFailureData());
 
-user = {
-        'name' : 'John',
-        'url': 'http://john.com'
+
+    user = {
+        name: 'John',
+        url: 'http://john.com'
     };
 
-console.log(userValidator.validate(user));
+    console.log(userValidator.validate(user));
+}).then(function(isValid) {
+    console.log(isValid);
+});
 ```
 
 Similar projects 
