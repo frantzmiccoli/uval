@@ -17,13 +17,13 @@ Some validation utilities are provided in the node.js ecosystem, but we felt tha
 Read more, Learn more
 ---
 
-* [What you will find and not find in uval](/what-you-will-find-not-find.html)
+* [What you will find and not find in uval](./what-you-will-find-not-find.html)
 
-* [Getting started with uval](/getting-started.html)
+* [Getting started with uval](./getting-started.html)
 
-* [Building a validation system](/building-validation-system.html)
+* [Building a validation system](./building-validation-system.html)
 
-* [Understanding Failure Data](/failure-data.html)
+* [Understanding Failure Data](./failure-data.html)
 
 
 
