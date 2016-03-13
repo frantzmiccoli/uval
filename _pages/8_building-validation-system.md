@@ -26,7 +26,7 @@ of the key is identifying the source of the original validator:
 * `validator.isurl` is coming from `node-validator` (that is usually imported through `require('validator')`
 * `_.isarray` is coming from `node-underscore`
 
-```javascript
+~~~javascript
 var registry = require('uval');
 
 // Let's show what's in there
@@ -54,7 +54,7 @@ urlValidator.validate('http://www.github.com').then(function(isValid) {
 Array validation
 ---
 
-```javascript
+~~~~javascript
 var registry = require('uval/registry'),
     isNumericValidator = registry['validator.isnumeric'](),
     ArrayValidator = registry['uval.array'],
@@ -70,12 +70,12 @@ arrayValidator.validate([0, 1, 2, 3, 'nope']).then(function(isValid) {
 }).then(function(isValid) {
     console.log(isValid);
 });
-```
+~~~~
 
 Optional parameters
 ---
 
-```javascript
+~~~~javascript
 var registry = require('uval/registry'),
     urlValidator = registry['validator.isurl'](),
     notSetValidator = registry['uval.isnotset'](),
@@ -98,12 +98,12 @@ nothingOrUrlValidator.validate(undefined).then(function(isValid) {
     // should not pass
     console.log(isValid);
 });
-```
+~~~~
 
 Validating a complex object
 ---
 
-```javascript
+~~~~javascript
 var registry = require('uval/registry'),
     urlValidator = registry['validator.isurl'](),
     setValidator = registry['uval.isset'](),
@@ -129,12 +129,12 @@ userValidator.validate(user).then(function(isValid) {
 }).then(function(isValid) {
     console.log(isValid);
 });
-```
+~~~~
 
 Creating a simple custom validator
 ---
 
-```javascript
+~~~~javascript
 var GenericValidator = require('uval/validator/Generic');
 
 function isOdd(someNumber) {
@@ -159,14 +159,14 @@ oddValidator.validate(2).then(function(isValid) {
 oddValidator.validate(3).then(function(isValid) {
     console.log('3 isValid ', isValid);
 });
-```
+~~~~
 
 Supporting promises and a context
 ---
 
 This is still a pretty simple usage
 
-```javascript
+~~~~javascript
 var Promise = require('bluebird');
 
 // Just to simulate a configuration coming from a promise (file or database
@@ -208,7 +208,7 @@ userCreditsIncrementValidator.validate(99, user).then(function (isValid) {
 userCreditsIncrementValidator.validate(101, user).then(function (isValid) {
     console.log('101 isValid ', isValid); // should not be
 });
-```
+~~~~
 
 Creating a more complex validator
 ---
@@ -217,7 +217,7 @@ Creating a more complex validator
 
 To provide more than one failure message.
 
-```javascript
+~~~~javascript
 // Just because isValid needs to return a promise
 var Promise = require('bluebird');
 
@@ -243,14 +243,14 @@ MultipleOf3Validator._isValid = function(input, context) {
     this._failureData.type = 'multipleOf3Validator/notAMultipleOf3';
     return Promise.resolve(false);
 };
-```
+~~~~
 
 ### Maiden name validator
 
 To use a context, note that context is also available as second argument of a
 GenericValidator.
 
-```javascript
+~~~~javascript
 // Just because isValid needs to return a promise
 var Promise = require('bluebird');
 
@@ -281,4 +281,4 @@ MaidenNameValidator._isValid = function(input, context) {
 
     return Promise.resolve(true);
 };
-```
+~~~~
