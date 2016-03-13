@@ -10,8 +10,11 @@ Registry
 
 Validators are not directly exposed by the registry, the registry exposes
 generators that are providing actual validators once called. This is why you
-will see below calls on the items of the registry like
-`var urlValidator = registry['validator.isurl']();`. This is because:
+will see below calls on the items of the registry like:
+
+    var urlValidator = registry['validator.isurl']();
+
+This is because:
 
 * Validators have a state (mostly to manipulate failure data)
 * Validators may need parameters.
@@ -46,7 +49,7 @@ urlValidator.validate('http://www.github.com').then(function(isValid) {
     // This is true and getFailureData should be reset
     console.log(isValid);
 });
-```
+~~~~
 
 Array validation
 ---

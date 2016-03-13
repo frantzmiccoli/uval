@@ -5,8 +5,8 @@ menuTitle: Getting started
 permalink: /getting-started.html
 ---
 
-```
 
+~~~ javascript
 var registry = require('uval');
 
 var urlValidator = registry['validator.isurl']();
@@ -16,7 +16,7 @@ urlValidator.validate('http://www.github.com').then(function(isValid) {
 
 // curious about what else is available? just log the keys!
 console.log(Object.keys(registry));
-/*
+/* This is what you could expect:
   'uval.isset': [Function],
   'uval.isnotset': [Function],
   'uval.or': [Function],

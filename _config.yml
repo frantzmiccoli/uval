@@ -6,6 +6,6 @@ baseurl: "" # the subpath of your site, e.g. /blog/
 url: "http://frantzmiccoli.github.io/uval"
 
 # Build settings
-markdown: redcarpet
+markdown: kramdown
 include: ['_pages']
 
