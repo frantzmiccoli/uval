@@ -10,7 +10,7 @@ FailureData have the following form:
   configuration: { ... },
   input: "The input on which it has failed can be something else than" +
                 " a string",
-  subFailureData: {
+  subFailureData: { //can be an array as well
     ...
   }
 }

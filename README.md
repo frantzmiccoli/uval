@@ -42,8 +42,6 @@ The registry contains already available validators from other libraries wrapped 
 * `validator.isurl` is coming from `node-validator` (that is usually imported through `require('validator')`
 * `_.isarray` is coming from `node-underscore`
 
-**The registry can be accessed either through `require('uval')` and `require('uval/registry')`**.
-
 ```
 var registry = require('uval');
 
@@ -56,13 +54,13 @@ urlValidator.validate('http://www.github.com').then(function(isValid) {
     console.log(isValid);
 
 
-    urlValidator.validate('what ?')
+    return urlValidator.validate('what ?')
 }).then(function(isValid) {
     console.log(isValid);
     urlValidator.getFailureData();
 
 
-    urlValidator.validate('http://www.github.com');
+    return urlValidator.validate('http://www.github.com');
 }).then(function(isValid) {
     // This is true and getFailureData should be reset
     console.log(isValid);
@@ -105,13 +103,13 @@ nothingOrUrlValidator.validate(undefined).then(function(isValid) {
     console.log(isValid);
 
 
-    nothingOrUrlValidator.validate('Something that is not expected');
+    return nothingOrUrlValidator.validate('Something that is not expected');
 }).then(function(isValid) {
     // should not pass
     console.log(isValid);
 
 
-    nothingOrUrlValidator.validate('http://anything.com')
+    return nothingOrUrlValidator.validate('http://anything.com')
 }).then(function(isValid) {
     // should not pass
     console.log(isValid);
@@ -143,8 +141,7 @@ userValidator.validate(user).then(function(isValid) {
         name: 'John',
         url: 'http://john.com'
     };
-
-    console.log(userValidator.validate(user));
+    return userValidator.validate(user);
 }).then(function(isValid) {
     console.log(isValid);
 });
