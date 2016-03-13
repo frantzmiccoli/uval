@@ -1,0 +1,31 @@
+<div class="site-footer">
+    <div class="footer-col-wrapper">
+
+        <div class="footer-col footer-col-1"></div>
+
+        <div class="footer-col footer-col-2">
+            uval <br/> MIT License</div>
+
+        <div class="footer-col footer-col-3">
+            <div class="menu">
+                {% for page in site.pages %}
+                    <div class="menu-link">
+                        <a href="{{ page.permalink }}">
+                            {% if page.menuTitle %}
+                                {{ page.menuTitle }}
+                            {% else %}
+                                {{ page.title }}
+                            {% endif %}
+                        </a>
+                    </div>
+
+                {% if page.menuSeparator %}
+                    <div class="menu-separator"></div>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+</div>

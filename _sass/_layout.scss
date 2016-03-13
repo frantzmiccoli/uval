@@ -8,6 +8,8 @@
 
     // Positioning context for the mobile navigation icon
     position: relative;
+
+    text-align: center;
 }
 
 .site-title {
@@ -15,11 +17,10 @@
     line-height: 56px;
     letter-spacing: -1px;
     margin-bottom: 0;
-    float: left;
 
-    &,
-    &:visited {
+    &, &:visited, &:hover {
         color: $grey-color-dark;
+        text-decoration: none;
     }
 }
 
@@ -233,4 +234,10 @@
             font-size: 18px;
         }
     }
+}
+
+.menu-separator {
+    width: 1em;
+    margin: 1em 0;
+    border: 1px solid grey;
 }
