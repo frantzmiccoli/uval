@@ -10,7 +10,7 @@
             <div class="menu">
                 {% for page in site.pages %}
                     <div class="menu-link">
-                        <a href="{{ page.permalink }}">
+                        <a href="{{ site.url }}/{{ page.permalink }}">
                             {% if page.menuTitle %}
                                 {{ page.menuTitle }}
                             {% else %}
