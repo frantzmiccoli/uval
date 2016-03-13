@@ -13,7 +13,10 @@ class GenericValidator extends ValidatorAbstract
 
   _isValid: (input, context) =>
     @_failureData = @_getStandardFailureData(input, context)
-    Promise.resolve(@_validationFunction(input, @_extraValidationArguments...))
+    extraArguments = @_extraValidationArguments
+    if context?
+      extraArguments.unshift(context)
+    Promise.resolve(@_validationFunction(input, extraArguments...))
 
   _getStandardFailureData: (input, context) =>
     failureData = super(input, context)

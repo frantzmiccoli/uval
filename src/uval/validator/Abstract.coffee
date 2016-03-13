@@ -6,7 +6,7 @@ their getFailureData() method to get information about the failure.
 FailureData have the following form:
 ```
 {
-  type: "validatorFailueType",
+  type: "validatorFailureType",
   configuration: { ... },
   input: "The input on which it has failed can be something else than" +
                 " a string",

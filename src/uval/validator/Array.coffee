@@ -10,7 +10,8 @@ ValidatorAbstract = require 'uval/validator/Abstract'
 ###
 class ArrayValidator extends ValidatorAbstract
 
-  constructor: (@_validator, @_failureTypePrefix = 'uval/validator/Array/') ->
+  constructor: (@_validatorGenerator,
+                @_failureTypePrefix = 'uval/validator/Array/') ->
     super()
     @_failureData = []
 
