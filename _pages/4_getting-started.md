@@ -14,6 +14,12 @@ urlValidator.validate('http://www.github.com').then(function(isValid) {
     console.log(isValid);
 });
 
+urlValidator.validate('uhuhuh').then(function(isValid) {
+    console.log(isValid);
+
+    console.log(urlValidator.getFailureData());
+});
+
 // curious about what else is available? just log the keys!
 console.log(Object.keys(registry));
 /* This is what you could expect:
@@ -32,4 +38,4 @@ console.log(Object.keys(registry));
   '_.isstring': [Function]
 */
 
-```
+~~~

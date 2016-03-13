@@ -41,7 +41,7 @@ urlValidator.validate('http://www.github.com').then(function(isValid) {
     return urlValidator.validate('what ?')
 }).then(function(isValid) {
     console.log(isValid);
-    urlValidator.getFailureData();
+    console.log(urlValidator.getFailureData());
 
 
     return urlValidator.validate('http://www.github.com');
@@ -57,8 +57,9 @@ Array validation
 ~~~~javascript
 var registry = require('uval/registry'),
     isNumericValidator = registry['validator.isnumeric'](),
+    isNumericValidatorGenerator = function() {return isNumericValidator;},
     ArrayValidator = registry['uval.array'],
-    arrayValidator = new ArrayValidator(isNumericValidator);
+    arrayValidator = new ArrayValidator(isNumericValidatorGenerator);
 
 arrayValidator.validate([0, 1, 2, 3, 'nope']).then(function(isValid) {
     console.log(isValid);
@@ -66,7 +67,7 @@ arrayValidator.validate([0, 1, 2, 3, 'nope']).then(function(isValid) {
     console.log(arrayValidator.getFailureData());
 
 
-    arrayValidator.validate([0, 12, -23])
+    return arrayValidator.validate([0, 12, -23])
 }).then(function(isValid) {
     console.log(isValid);
 });
@@ -95,7 +96,7 @@ nothingOrUrlValidator.validate(undefined).then(function(isValid) {
 
     return nothingOrUrlValidator.validate('http://anything.com')
 }).then(function(isValid) {
-    // should not pass
+    // should pass
     console.log(isValid);
 });
 ~~~~
@@ -135,6 +136,7 @@ Creating a simple custom validator
 ---
 
 ~~~~javascript
+var uval = require('uval');
 var GenericValidator = require('uval/validator/Generic');
 
 function isOdd(someNumber) {
@@ -143,7 +145,7 @@ function isOdd(someNumber) {
 
 var oddValidatorGenerator = function() {
     var validator = new GenericValidator(isOdd,
-        'custom/message/to/be/returned/when/isOdd/returns/false'
+        'custom/message/to/be/returned/when/isOdd/returns/false');
     return validator;
 };
 
@@ -167,6 +169,7 @@ Supporting promises and a context
 This is still a pretty simple usage
 
 ~~~~javascript
+var uval = require('uval');
 var Promise = require('bluebird');
 
 // Just to simulate a configuration coming from a promise (file or database
@@ -182,7 +185,7 @@ var GenericValidator = require('uval/validator/Generic');
 // the validator will be use like validator.validate(input, context)
 function validateUserCreditsIncrement(creditIncrement, user) {
     var role = user.role;
-    getConfigPromise('user.' + role + '.maxCreditIncrement').then(
+    return getConfigPromise('user.' + role + '.maxCreditIncrement').then(
         function(maxCreditIncrement) {
             return creditIncrement <= maxCreditIncrement;
         }
@@ -191,11 +194,11 @@ function validateUserCreditsIncrement(creditIncrement, user) {
 
 var userCreditsIncrementValidatorGenerator = function() {
     var validator = new GenericValidator(validateUserCreditsIncrement,
-        'custom/message/to/be/returned/when/validation/fails'
+        'custom/message/to/be/returned/when/validation/fails');
     return validator;
 };
 
-uval['custom/userCreditsIncrement'] = userCreditsIncrementsValidatorGenerator;
+uval['custom/userCreditsIncrement'] = userCreditsIncrementValidatorGenerator;
 
 // later in any piece of code that has an access to uval
 var userCreditsIncrementValidator = uval['custom/userCreditsIncrement']();
@@ -218,6 +221,7 @@ Creating a more complex validator
 To provide more than one failure message.
 
 ~~~~javascript
+var uval = require('uval');
 // Just because isValid needs to return a promise
 var Promise = require('bluebird');
 
@@ -225,10 +229,15 @@ var ValidatorAbstract = require('uval/validator/Abstract');
 
 function MultipleOf3Validator() {};
 
-MultipleOf3Validator.prototype = ValidatorAbstract;
+MultipleOf3Validator.prototype = new ValidatorAbstract();
 
-MultipleOf3Validator._isValid = function(input, context) {
+MultipleOf3Validator.prototype.getFailureData = function() {
+    return this._failureData;
+};
+
+MultipleOf3Validator.prototype._isValid = function(input) {
     this._failureData = this._getStandardFailureData();
+    this._failureData.input = input;
 
     if (isNaN(input)) {
         this._failureData.type = 'multipleOf3Validator/isNaN';
@@ -236,13 +245,33 @@ MultipleOf3Validator._isValid = function(input, context) {
     }
 
     var mod3 = input % 3;
-    if (mod3 === 0)) {
+    if (mod3 === 0) {
         return Promise.resolve(true);
     }
 
     this._failureData.type = 'multipleOf3Validator/notAMultipleOf3';
     return Promise.resolve(false);
 };
+
+function multipleOf3ValidatorGenerator() {
+    return new MultipleOf3Validator();
+}
+
+uval['custom/multipleOf3'] = multipleOf3ValidatorGenerator;
+
+// later
+
+var multipleOf3ValidatorValidatorInstance =
+    uval['custom/multipleOf3']();
+
+multipleOf3ValidatorValidatorInstance.validate(3).then(function(isValid) {
+    console.log(isValid);
+
+    return multipleOf3ValidatorValidatorInstance.validate(2);
+}).then(function(isValid) {
+    console.log(isValid);
+    console.log(multipleOf3ValidatorValidatorInstance.getFailureData());
+});
 ~~~~
 
 ### Maiden name validator
@@ -251,6 +280,7 @@ To use a context, note that context is also available as second argument of a
 GenericValidator.
 
 ~~~~javascript
+var uval = require('uval');
 // Just because isValid needs to return a promise
 var Promise = require('bluebird');
 
@@ -258,10 +288,15 @@ var ValidatorAbstract = require('uval/validator/Abstract');
 
 function MaidenNameValidator() {};
 
-MaidenNameValidator.prototype = ValidatorAbstract;
+MaidenNameValidator.prototype = new ValidatorAbstract();
 
-MaidenNameValidator._isValid = function(input, context) {
+MaidenNameValidator.prototype.getFailureData = function() {
+    return this._failureData;
+};
+
+MaidenNameValidator.prototype._isValid = function(input, context) {
     this._failureData = this._getStandardFailureData();
+    this._failureData.input = input;
 
     if ((typeof(input) === 'undefined') || (input === '')) {
         return Promise.resolve(true);
@@ -281,4 +316,26 @@ MaidenNameValidator._isValid = function(input, context) {
 
     return Promise.resolve(true);
 };
+
+function maidenNameValidatorGenerator() {
+    return new MaidenNameValidator();
+}
+
+uval['custom/maidenName'] = maidenNameValidatorGenerator;
+
+// later
+
+var maidenNameValidatorInstance = uval['custom/maidenName']();
+
+var context = {gender: 'male'}
+
+maidenNameValidatorInstance.validate(undefined, context)
+.then(function (isValid) {
+    console.log(isValid);
+
+    return maidenNameValidatorInstance.validate('Ray', context);
+}).then (function(isValid) {
+    console.log(isValid);
+    console.log(maidenNameValidatorInstance.getFailureData());
+});
 ~~~~

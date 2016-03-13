@@ -15,7 +15,7 @@ This is the kind of data you will get:
 
 ~~~javascript
 {
-  type: "validatorFailueType",
+  type: "validatorFailureType",
   configuration: { ... },
   input: "The input on which it has failed can be something else than" +
                 " a string",

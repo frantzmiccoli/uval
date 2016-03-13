@@ -3,7 +3,8 @@ title: uval - A generic and extendable validation library
 description: > # this means to ignore newlines until "baseurl:"
   Server or client side validation made easy.
 baseurl: "" # the subpath of your site, e.g. /blog/
-url: "https://frantzmiccoli.github.io/uval"
+url: "https://frantzmiccoli.github.io"
+baseurl: "/uval"
 
 # Build settings
 markdown: kramdown
