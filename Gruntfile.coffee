@@ -25,7 +25,7 @@ module.exports = (grunt) ->
 
     shell:
       coffee:
-        command: 'node_modules/.bin/coffee --output lib src'
+        command: 'node_modules/coffee-script/bin/coffee --output lib src'
 
       publish:
         command: 'cp package.json lib/uval; cp README.md lib/uval; ' +
