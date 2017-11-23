@@ -29,7 +29,7 @@ module.exports = (grunt) ->
 
       publish:
         command: 'cp package.json lib/uval; cp README.md lib/uval; ' +
-          '(cd lib/uval; npm publish);'
+          '(cd lib/uval; npm publish --force);'
 
 
   grunt.loadNpmTasks 'grunt-contrib-watch'
