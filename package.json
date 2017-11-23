@@ -1,6 +1,6 @@
 {
   "name": "uval",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "author": "Fräntz Miccoli",
   "license": "MIT",
   "description": "A generic and extendable validation library containing tools for validation chain, array validation, optional validation and others.",
