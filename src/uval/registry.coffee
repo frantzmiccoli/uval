@@ -48,7 +48,7 @@ registry['validator.isin'] = (values) ->
       'validator/isin/notInArray',
       values)
 
-_ = require 'underscore-node'
+_ = require 'lodash'
 
 registry['_.isarray'] = ->
   new GenericValidator(_.isArray, '_/isarray/notAnArray')
